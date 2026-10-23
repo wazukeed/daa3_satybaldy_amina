@@ -24,7 +24,11 @@ public class DagShortestPath {
             }
 
             for (Edge edge : graph.neighbors(vertex)) {
+                Metrics.countEdge();
+
                 long newDist = dist[vertex] + edge.weight;
+
+                Metrics.countComparison();
 
                 if (newDist < dist[edge.to]) {
                     dist[edge.to] = newDist;

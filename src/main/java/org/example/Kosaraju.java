@@ -14,7 +14,7 @@ public class Kosaraju {
         boolean[] visited = new boolean[n];
         List<Integer> order = new ArrayList<>();
 
-        // First DFS: find finishing order
+        // First DFS: finishing order
         for (int start = 0; start < n; start++) {
 
             if (visited[start]) {
@@ -26,23 +26,25 @@ public class Kosaraju {
             visited[start] = true;
 
             while (!stack.isEmpty()) {
+                Metrics.recordStackDepth(stack.size());
 
-                int[] top = stack.peek();
-                int v = top[0];
+                int[] current = stack.peek();
+                int vertex = current[0];
+                List<Edge> neighbors = graph.neighbors(vertex);
 
-                if (top[1] < graph.neighbors(v).size()) {
+                if (current[1] < neighbors.size()) {
+                    Edge edge = neighbors.get(current[1]);
+                    current[1]++;
 
-                    Edge edge = graph.neighbors(v).get(top[1]);
-                    top[1]++;
+                    Metrics.countEdge();
 
                     if (!visited[edge.to]) {
                         visited[edge.to] = true;
                         stack.push(new int[]{edge.to, 0});
                     }
-
                 } else {
-                    order.add(v);
                     stack.pop();
+                    order.add(vertex);
                 }
             }
         }
@@ -55,6 +57,7 @@ public class Kosaraju {
         }
 
         for (Edge edge : graph.getEdges()) {
+            Metrics.countEdge();
             reversed.get(edge.to).add(edge.from);
         }
 
@@ -62,7 +65,7 @@ public class Kosaraju {
 
         List<List<Integer>> components = new ArrayList<>();
 
-        // Second DFS: find components
+        // Second DFS: find SCCs
         for (int i = order.size() - 1; i >= 0; i--) {
 
             int start = order.get(i);
@@ -78,11 +81,13 @@ public class Kosaraju {
             visited[start] = true;
 
             while (!stack.isEmpty()) {
+                Metrics.recordStackDepth(stack.size());
 
-                int v = stack.pop();
-                component.add(v);
+                int vertex = stack.pop();
+                component.add(vertex);
 
-                for (int next : reversed.get(v)) {
+                for (int next : reversed.get(vertex)) {
+                    Metrics.countEdge();
 
                     if (!visited[next]) {
                         visited[next] = true;

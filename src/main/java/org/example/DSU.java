@@ -5,7 +5,6 @@ public class DSU {
     private final int[] parent;
     private final int[] rank;
     private final int[] size;
-
     private int components;
 
     public DSU(int n) {
@@ -16,7 +15,6 @@ public class DSU {
         parent = new int[n];
         rank = new int[n];
         size = new int[n];
-
         components = n;
 
         for (int i = 0; i < n; i++) {
@@ -31,8 +29,14 @@ public class DSU {
             throw new IllegalArgumentException("Invalid element");
         }
 
+        return findWithDepth(x, 1);
+    }
+
+    private int findWithDepth(int x, int depth) {
+        Metrics.countDsuOperation(depth);
+
         if (parent[x] != x) {
-            parent[x] = find(parent[x]);
+            parent[x] = findWithDepth(parent[x], depth + 1);
         }
 
         return parent[x];
@@ -47,16 +51,17 @@ public class DSU {
         }
 
         if (rank[rootA] < rank[rootB]) {
-            int temp = rootA;
-            rootA = rootB;
-            rootB = temp;
-        }
+            parent[rootA] = rootB;
+            size[rootB] += size[rootA];
 
-        parent[rootB] = rootA;
-        size[rootA] += size[rootB];
+        } else if (rank[rootA] > rank[rootB]) {
+            parent[rootB] = rootA;
+            size[rootA] += size[rootB];
 
-        if (rank[rootA] == rank[rootB]) {
+        } else {
+            parent[rootB] = rootA;
             rank[rootA]++;
+            size[rootA] += size[rootB];
         }
 
         components--;

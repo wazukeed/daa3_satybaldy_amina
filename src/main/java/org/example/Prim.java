@@ -15,9 +15,10 @@ public class Prim {
         boolean[] visited = new boolean[n];
         List<Edge> mstEdges = new ArrayList<>();
 
-        PriorityQueue<Edge> pq = new PriorityQueue<>(
-                Comparator.comparingInt(e -> e.weight)
-        );
+        PriorityQueue<Edge> pq = new PriorityQueue<>((a, b) -> {
+            Metrics.countComparison();
+            return Integer.compare(a.weight, b.weight);
+        });
 
         long totalWeight = 0;
         int components = 0;
@@ -31,7 +32,10 @@ public class Prim {
             components++;
             visited[start] = true;
 
-            pq.addAll(graph.neighbors(start));
+            for (Edge edge : graph.neighbors(start)) {
+                Metrics.countEdge();
+                pq.add(edge);
+            }
 
             while (!pq.isEmpty()) {
 
@@ -46,6 +50,8 @@ public class Prim {
                 totalWeight += edge.weight;
 
                 for (Edge next : graph.neighbors(edge.to)) {
+                    Metrics.countEdge();
+
                     if (!visited[next.to]) {
                         pq.add(next);
                     }

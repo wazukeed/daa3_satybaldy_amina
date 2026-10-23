@@ -14,6 +14,7 @@ public class Kahn {
         int[] indegree = new int[n];
 
         for (Edge edge : graph.getEdges()) {
+            Metrics.countEdge();
             indegree[edge.to]++;
         }
 
@@ -34,8 +35,11 @@ public class Kahn {
 
             for (Edge edge : graph.neighbors(v)) {
 
+                Metrics.countEdge();
+
                 indegree[edge.to]--;
 
+                Metrics.countComparison();
                 if (indegree[edge.to] == 0) {
                     queue.add(edge.to);
                 }

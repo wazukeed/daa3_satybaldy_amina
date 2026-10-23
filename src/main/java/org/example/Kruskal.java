@@ -12,7 +12,10 @@ public class Kruskal {
 
         List<Edge> sortedEdges = new ArrayList<>(graph.getEdges());
 
-        sortedEdges.sort(Comparator.comparingInt(e -> e.weight));
+        sortedEdges.sort((a, b) -> {
+            Metrics.countComparison();
+            return Integer.compare(a.weight, b.weight);
+        });
 
         DSU dsu = new DSU(graph.getVertexCount());
 
@@ -20,6 +23,7 @@ public class Kruskal {
         long totalWeight = 0;
 
         for (Edge edge : sortedEdges) {
+            Metrics.countEdge();
 
             if (dsu.union(edge.from, edge.to)) {
                 mstEdges.add(edge);
