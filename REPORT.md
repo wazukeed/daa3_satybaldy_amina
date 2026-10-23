@@ -154,7 +154,7 @@ The benchmark output is saved in `results/results.csv`.
 
 ### 6.1 Running Time
 
-![Running time](results/runtime.png)
+<img src="results/runtime.png" alt="Running time" width="560">
 
 Figure 1 shows the average running time for different graph sizes and edge densities.
 
@@ -170,7 +170,7 @@ There are small differences and fluctuations for smaller graphs. This is normal 
 
 ### 6.2 Edge Scans
 
-![Edge scans](results/edge_scans.png)
+<img src="results/edge_scans.png" alt="Edge scans" width="420">
 
 Figure 2 shows how the number of edge scans changes when the graph becomes larger.
 
@@ -186,7 +186,7 @@ This graph helps explain the difference between theoretical complexity and actua
 
 ### 6.3 MST Comparisons
 
-![MST comparisons](results/comparisons.png)
+<img src="results/comparisons.png" alt="MST comparisons" width="420">
 
 Figure 3 compares the number of recorded comparisons in Kruskal and Prim.
 
