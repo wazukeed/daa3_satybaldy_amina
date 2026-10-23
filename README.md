@@ -2,8 +2,6 @@
 
 **Student:** Amina Satybaldy  
 **Group:** SE-2517  
-**Course:** Design and Analysis of Algorithms  
-**University:** Astana IT University
 
 ## 1. Project Description
 
